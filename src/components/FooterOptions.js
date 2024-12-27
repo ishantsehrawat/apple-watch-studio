@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { watchBand, watchCase, watchSize } from "../assets/icons";
+import { cn } from "../utils";
 
 export default function FooterOptions({
   isHome,
@@ -18,6 +19,21 @@ export default function FooterOptions({
     case: watchCase,
     bands: watchBand,
   };
+  const [footerOptionScroll, setFooterOptionScroll] = useState(false);
+
+  const footerOptionsRef = useRef(null);
+  useEffect(() => {
+    const elementWidth = footerOptionsRef.current
+      ? footerOptionsRef.current.scrollWidth
+      : 0;
+    const windowWidth = window.innerWidth;
+
+    if (elementWidth > windowWidth) {
+      setFooterOptionScroll(true);
+    } else {
+      setFooterOptionScroll(false);
+    }
+  }, [footerOptionsRef?.current?.scrollWidth]);
 
   useEffect(() => {
     if (options && options.length) {
@@ -48,7 +64,7 @@ export default function FooterOptions({
 
   return (
     <div
-      className={`w-full absolute bottom-16 flex flex-col justify-center pt-28 text-center gap-16 md:gap-8 md:pt-16 overflow-hidden transition-opacity duration-500 delay-1000 ${
+      className={`w-full absolute bottom-16 flex flex-col justify-center pt-28 text-center gap-16 md:gap-8 md:pt-16  transition-opacity duration-500 delay-1000 ${
         !isHome ? "opacity-1" : "opacity-0"
       }`}
     >
@@ -71,17 +87,21 @@ export default function FooterOptions({
       </div>
 
       {/* Options */}
-      <div className="flex gap-4 justify-center overflow-scroll whitespace-nowrap px-4">
+      <div
+        ref={footerOptionsRef}
+        className={cn(
+          " w-full flex gap-4 overflow-x-auto px-4 justify-center",
+          { "justify-start": footerOptionScroll }
+        )}
+      >
         {options?.map((option) => (
           <div
             key={option?.sectionId}
-            className={`flex items-center px-4 py-2 bg-appleGrey rounded-full gap-4 transition-all duration-500 ${
-              expandedOption === option?.sectionId && option?.options ? "" : ""
-            }`}
+            className={`flex items-center px-4 py-2 bg-appleGrey rounded-full transition-all duration-500 `}
           >
             {/* Icon */}
             <img
-              className="h-6 transition-transform duration-300"
+              className="h-6 transition-transform duration-300 mr-4"
               src={icons[option?.sectionId]}
               alt="icon"
             />
@@ -91,7 +111,7 @@ export default function FooterOptions({
               className={`transition-transform duration-300 ${
                 expandedOption === option?.sectionId && option?.options
                   ? "scale-0 hidden"
-                  : ""
+                  : "mr-4"
               }`}
               onClick={(e) =>
                 handleButtonClick(e, option?.sectionId, option?.key)
@@ -102,16 +122,16 @@ export default function FooterOptions({
 
             {/* Options */}
             <div
-              className={`flex gap-3 overflow-hidden transition-all duration-500 ${
+              className={` flex transition-all duration-500 ${
                 expandedOption === option?.sectionId && option?.options
-                  ? "max-w-[100%] opacity-100"
+                  ? "max-w-max opacity-100"
                   : "max-w-0 opacity-0"
               }`}
             >
               {option?.options?.map((sectionOption, index) => (
                 <div
                   key={index}
-                  className={`transition-opacity duration-300 ${
+                  className={`transition-opacity duration-300 min-w-max mr-4 ${
                     expandedOption === option?.sectionId && option?.options
                       ? "opacity-100"
                       : "opacity-0 pointer-events-none"
