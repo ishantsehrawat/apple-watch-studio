@@ -12,12 +12,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hide scrollbar for both vertical and horizontal scrolling */
-.carousel-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for webkit browsers (Chrome, Safari) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-.carousel-container {
-  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

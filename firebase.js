@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBRBQfnhjqRPMyNNH3DUjoxK226Go1_L5w",
-  authDomain: "apple-watch-studio.firebaseapp.com",
-  projectId: "apple-watch-studio",
-  storageBucket: "apple-watch-studio.firebasestorage.app",
-  messagingSenderId: "832490840156",
-  appId: "1:832490840156:web:d6138b9381c2c7a478c699",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

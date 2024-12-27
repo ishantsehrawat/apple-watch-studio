@@ -22,6 +22,8 @@ export default function FooterOptions({
   const [footerOptionScroll, setFooterOptionScroll] = useState(false);
 
   const footerOptionsRef = useRef(null);
+
+  // Check if footer options are scrollable
   useEffect(() => {
     const elementWidth = footerOptionsRef.current
       ? footerOptionsRef.current.scrollWidth
@@ -35,6 +37,7 @@ export default function FooterOptions({
     }
   }, [footerOptionsRef?.current?.scrollWidth]);
 
+  // Set selected options on section change
   useEffect(() => {
     if (options && options.length) {
       const sectionData = options.find(
@@ -44,18 +47,20 @@ export default function FooterOptions({
     }
   }, [expandedOption, options, selectedWatch]);
 
+  // Handle section selection of footer options
   function handleButtonClick(event, sectionId, key) {
     event.preventDefault();
 
     if (expandedOption === sectionId) {
-      setExpandedOption(null); // Collapse if already expanded
+      setExpandedOption(null);
     } else {
-      setExpandedOption(sectionId); // Expand selected section
+      setExpandedOption(sectionId);
       setSelectedSection(sectionId);
       loadProductData(sectionId, key);
     }
   }
 
+  // Handle option selection of a seciton
   function handleOptionClick(event, option) {
     event.preventDefault();
     setWatch(option.index);
@@ -90,7 +95,7 @@ export default function FooterOptions({
       <div
         ref={footerOptionsRef}
         className={cn(
-          " w-full flex gap-4 overflow-x-auto px-4 justify-center",
+          "no-scrollbar w-full flex gap-4 overflow-x-auto px-4 justify-center",
           { "justify-start": footerOptionScroll }
         )}
       >

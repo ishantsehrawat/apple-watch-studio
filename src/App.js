@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Header, FooterOptions } from "./components";
+import { Header, FooterOptions, Carousel } from "./components";
 import { loader } from "./assets/images";
 import { fetchAppleProductData } from "./API/apiClient";
-import "./App.css";
-import Carousel from "./components/Carousel";
+import { DEFAULT_WATCH_PAYLOAD_DATA } from "./constants";
 
 function App() {
   const [isHome, setIsHome] = useState(true);
   const [studioSwitchersData, setStudioSwitchersData] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
-  const [queryParams, setQueryParams] = useState({
-    product: "Z0YQ",
-    "option.watch_cases": "MWX13LW/A",
-    "option.watch_bands": "MYAF3AM/A",
-  });
+  const [queryParams, setQueryParams] = useState(DEFAULT_WATCH_PAYLOAD_DATA);
   const [productData, setProductData] = useState(null);
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,10 +16,12 @@ function App() {
   const [watchIndex, setWatchIndex] = useState(0);
   const [sideView, setSideView] = useState(false);
 
+  // Get Started button click handler
   function startStudio() {
     setIsHome(false);
   }
 
+  // Select watch handler
   const selectWatch = (watch) => {
     setSelectedWatch(watch);
     let newQueryParams = {
@@ -34,12 +31,12 @@ function App() {
     };
     selectedSection && (newQueryParams.section = selectedSection);
 
-    // Only update queryParams if they are different
     if (JSON.stringify(newQueryParams) !== JSON.stringify(queryParams)) {
       setQueryParams(newQueryParams);
     }
   };
 
+  // API call to fetch product data
   const loadProductData = async (
     section = "",
     key = undefined,
@@ -63,6 +60,7 @@ function App() {
       data?.body?.products && setProductData(data?.body?.products);
       data?.body?.sections && setOptions(data?.body?.sections);
 
+      // Mapping watch index with footer options
       let i = 0;
       let sectionOption = "";
       let tempOptions = data?.body?.sections;
@@ -97,18 +95,18 @@ function App() {
     }
   };
 
+  // Fetch product data on component mount
   useEffect(() => {
-    // Call loadProductData only once when the component first renders
     loadProductData("");
-  }, []); // Empty dependency array ensures this runs only once
+  }, []);
 
+  // Set watch index on section change
   const setWatch = (index) => {
-    console.log(index);
     setWatchIndex(index);
   };
 
   return (
-    <div className="h-screen w-full relative">
+    <div className="h-screen relative">
       <Header
         isHome={isHome}
         studioSwitchersData={studioSwitchersData}
@@ -116,6 +114,7 @@ function App() {
         loadProductData={loadProductData}
       />
 
+      {/* Carousel or Hero Image */}
       {(() => {
         if (loading && !isHome) {
           return (
@@ -132,13 +131,14 @@ function App() {
                   productData={productData}
                   selectedWatch={selectedWatch}
                   section={selectedSection}
-                  setSelectedWatch={selectWatch}
                   sideView={sideView}
+                  setSelectedWatch={selectWatch}
                   setSideView={setSideView}
                 />
               </div>
             );
           } else {
+            // Landing Page
             return (
               <div className="relative">
                 <div
@@ -204,10 +204,10 @@ function App() {
         isHome={isHome}
         selectedWatch={selectedWatch}
         options={options}
+        sideView={sideView}
         loadProductData={loadProductData}
         setSelectedSection={setSelectedSection}
         setWatch={setWatch}
-        sideView={sideView}
         setSideView={setSideView}
       />
     </div>

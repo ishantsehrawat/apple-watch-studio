@@ -12,15 +12,18 @@ export default function Header({
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Toggle collections modal
   const openCollectionsModal = (isOpen) => {
     setIsModalOpen(isOpen);
   };
 
+  // Collection selection handler
   const handleCollectionClick = (collection) => {
-    loadProductData("", undefined, collection.dimensionCollectionKey);
+    loadProductData("", undefined, collection?.dimensionCollectionKey);
     openCollectionsModal(false);
   };
 
+  // Redirect to checkout page with selected watch
   const buySelectedWatch = () => {
     const URL = BASE_URL + selectedWatch?.url;
     window.location.href = URL;
@@ -35,6 +38,7 @@ export default function Header({
           alt="⌚️"
         />
 
+        {/* Collection options */}
         <button
           className={`hidden md:flex gap-1 items-center absolute left-[50%] -translate-x-[50%] transition-opacity duration-1000 ${
             isHome ? "opacity-0" : ""
@@ -44,6 +48,8 @@ export default function Header({
           <span>Collections</span>
           <img className="h-3 w-3" src={chevronDown} alt="down-arrow" />
         </button>
+
+        {/* Save button */}
         <button
           className={`hidden md:block rounded-full bg-appleBlue text-white px-4 py-1.5 transition-opacity duration-1000 ${
             isHome ? "opacity-0" : ""
@@ -75,24 +81,24 @@ export default function Header({
         </div>
       </div>
 
+      {/* Collection Modal */}
       {isModalOpen && (
         <Modal onClose={() => openCollectionsModal(false)}>
-          {console.log(studioSwitchersData)}
           <div className="px-6 flex flex-col ">
             {studioSwitchersData.map((collection, index) => (
-              <div key={collection.dimensionCollectionKey}>
+              <div key={collection?.dimensionCollectionKey}>
                 <button
                   className={`w-full py-4 text-lg text-center  ${
-                    collection.selected
+                    collection?.selected
                       ? "text-fontGrey"
                       : "hover:text-fontBlue"
                   }`}
-                  disabled={collection.selected}
+                  disabled={collection?.selected === true}
                   onClick={() => handleCollectionClick(collection)}
                 >
-                  {collection.linkText}
+                  <span>{collection?.linkText}</span>
                 </button>
-                {index !== studioSwitchersData.length - 1 && <hr />}
+                {index !== studioSwitchersData?.length - 1 && <hr />}
               </div>
             ))}
           </div>

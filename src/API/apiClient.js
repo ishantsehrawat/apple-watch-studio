@@ -3,7 +3,7 @@ export const fetchAppleProductData = async (queryParams) => {
 
   try {
     const url = new URL(BASE_URL);
-    // Merge defaultParams with queryParams (for flexibility)
+
     const params = { ...queryParams };
     Object.entries(params).forEach(([key, value]) =>
       url.searchParams.append(key, value)

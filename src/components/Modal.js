@@ -6,9 +6,6 @@ export default function Modal({ children, onClose }) {
   useEffect(() => {
     // Trigger fade-in effect when the component is mounted
     setIsVisible(true);
-    return () => {
-      // Clean-up logic, if necessary
-    };
   }, []);
 
   const handleClose = () => {
@@ -16,9 +13,10 @@ export default function Modal({ children, onClose }) {
     setIsVisible(false);
     setTimeout(() => {
       onClose();
-    }, 300); // Match the transition duration
+    }, 300);
   };
 
+  // Close the modal when the background is clicked
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
       handleClose();
